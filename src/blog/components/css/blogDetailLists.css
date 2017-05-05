@@ -1,0 +1,26 @@
+.blog-item-list {
+    /*width: 600px;*/
+}
+.bottom-pagination {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.bottom-pagination .ant-pagination-item:hover {
+    transition: all 0.3s ease;
+    border-color: #ecaffd;
+}
+.bottom-pagination .ant-pagination-item-active{
+    background-color: #e468d5;
+    border-color: #eda7fb;
+}
+.ant-pagination-item:hover a {
+    color: #f91edf;
+}
+.ant-pagination-prev:hover, .ant-pagination-next:hover {
+    border-color: #eda7fb;
+}
+.ant-pagination-prev:hover a, .ant-pagination-next:hover a {
+    color: #f91edf;
+}

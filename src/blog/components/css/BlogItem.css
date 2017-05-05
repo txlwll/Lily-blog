@@ -1,0 +1,73 @@
+.blog-item-list {
+    /*width: 600px;*/
+}
+.blog-item {
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+}
+.title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px;
+}
+.blog-title {
+    color: #8c037f;
+    font-size: 22px;
+}
+.blog-date {
+    color: #666;
+}
+.blog-content {
+    padding: 0 30px 20px;
+    max-height: 65px;
+    overflow: hidden;
+}
+.read-all {
+    color: #666;
+}
+.bottom-wrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-top: solid 1px #e5e5e5;
+}
+.wrap {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 0;
+    border-right: solid 1px #e5e5e5;
+    color: #666;
+}
+.bottom-wrap .wrap:first-child:hover {
+    cursor: pointer;
+}
+.wrap:last-child {
+    border-right: none;
+}
+.wrap-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+.wrap-icon.zan {
+    background: url("../../imgs/weizan.png") no-repeat;
+    background-size: contain;
+}
+.wrap-icon.pinglun {
+    background: url("../../imgs/pinglun_icon.png") no-repeat;
+    background-size: contain;
+}
+.wrap-icon.scan {
+    background: url("../../imgs/scan_icon.png") no-repeat;
+    background-size: contain;
+}

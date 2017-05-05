@@ -1,0 +1,39 @@
+/*博客分类列表*/
+.category-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    height: 80px;
+    padding: 5px 20px;
+    border-bottom: solid 1px #e5e5e5;
+}
+.category-item:hover {
+    cursor: pointer;
+    background-color: rgba(0,0,0,.06);
+}
+.category-item-left {
+    display: flex;
+    flex-direction: row;
+    margin-right: 100px;
+    align-items: center;
+}
+.category-icon {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin-right: 20px;
+    background: url("../../imgs/category_iocn.png") no-repeat;
+    background-size: contain;
+}
+.item-content {
+    display: flex;
+    flex-direction: column;
+}
+.icon-back {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url("../../imgs/icon_back2.png") no-repeat center;
+    background-size: contain;
+}

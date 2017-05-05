@@ -1,0 +1,65 @@
+/*导航栏*/
+.navBarBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.navBar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.nav-left,.nav-right,.nav-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.nav-left {
+    justify-content: space-between;
+}
+.nav-right {
+    margin-left: 150px;
+}
+.nav-item {
+    padding: 0 30px;
+}
+.nav-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+.nav-text {
+    color: #fff;
+}
+.nav-icon.avatar {
+    background: url("../../imgs/avatar.jpg") no-repeat;
+    background-size: contain;
+}
+.nav-icon.home-page {
+    background: url("../../imgs/home.png") no-repeat;
+    background-size: contain;
+}
+.nav-icon.blog-icon {
+    background: url("../../imgs/blog_icon.png") no-repeat;
+    background-size: contain;
+}
+.nav-icon.about {
+    background: url("../../imgs/about_icon.png") no-repeat;
+    background-size: contain;
+}
+/*搜索*/
+.search-input {
+    width: 200px;
+    height: 30px;
+    padding: 0 10px;
+    margin-right: 10px;
+    background: #ffffff;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+}
+.search-text {
+    color: #fff;
+}

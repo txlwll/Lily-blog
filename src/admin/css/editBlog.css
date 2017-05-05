@@ -1,0 +1,94 @@
+.example-input .ant-input {
+    width: 100%;
+    margin: 0 8px 8px 0;
+}
+.edit-title-title {
+    margin-top: 10px;
+}
+.ant-input-lg {
+    height: 40px;
+}
+.ant-input:hover {
+    border-color: #346386;
+}
+.ant-input:focus {
+    border-color: #516588;
+    box-shadow: 0 0 0 2px rgba(110, 130, 144, 0.2);
+}
+.edit-options {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px 0;
+}
+.selected-option .ant-btn:hover,.selected-option .ant-btn:focus {
+    color: #516588;
+    background-color: #fff;
+    border-color: #516588;
+}
+.edit-options .clearfix {
+    margin-left: 20px;
+}
+
+/*图片上传*/
+.ant-upload.ant-upload-select-picture-card {
+    width: 100px;
+    height: 30px;
+    margin-top: 35px;
+    line-height: 30px;
+    color: #ffffff;
+    border: none;
+    background-color: #0886f7;
+}
+.ant-upload.ant-upload-select-picture-card > .ant-upload {
+     padding: 0;
+}
+
+/*保存*/
+.save-btn .ant-btn.ant-btn-primary{
+    width: 85px;
+}
+
+/*编辑框*/
+.edit-content {
+    display: flex;
+    flex-direction: row;
+    height: 500px;
+}
+.edit-left,.edit-right {
+    flex: 1;
+    border: solid 1px #e5e5e5;
+}
+.edit-left {
+    height: 100%;
+    outline: none;
+    border-right: none;
+}
+.admin-edit-blog {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    resize: none;
+    border: none;
+    outline: none;
+}
+.edit-right {
+    padding: 20px;
+}
+.edit-right pre {
+    margin: 15px 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

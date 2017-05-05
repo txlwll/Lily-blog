@@ -1,0 +1,24 @@
+.category-detail {
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: #fff;
+    box-shadow: 0px -1px 1px #bf78bf inset;
+}
+.category-detail-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    background-color: hsla(299, 18%, 91%, 0.5);
+}
+.article-title {
+    font-size: 16px;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

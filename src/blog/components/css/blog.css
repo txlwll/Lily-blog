@@ -1,0 +1,75 @@
+/*博客页面*/
+
+.blogBody {
+    width: 100%;
+    height: 100%;
+    background: -webkit-gradient(linear,0% 0%, 0% 150%, from(#a060a5), to(#ffbc97), color-stop(1.0,rgb(200, 255, 171)));
+    overflow: auto;
+}
+.header {
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 1000;
+    min-height: 55px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.9;
+    font-size: 14px;
+    background-color: #222;
+    border-color: #080808;
+    border-width: 0 0 1px;
+    min-width: 1024px;
+}
+.blogContainer {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    max-width: 1024px;
+    margin: 0 auto;
+    padding-top: 100px;
+    padding-bottom: 50px;
+
+}
+.left-list,.right-list {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    opacity: 0.8;
+}
+.left-list {
+    margin-right: 20px;
+    width: 300px;
+    min-height: 600px;
+    max-height: 750px;
+    border-radius: 5px;
+    overflow: auto;
+}
+.right-list {
+    flex: 1;
+    background-color: transparent;
+}
+.pager-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
