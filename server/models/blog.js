@@ -1,4 +1,5 @@
-const config = require('../config')
+const mongo = require('koa-mongo');
+const config = require('../config');
 
 module.exports = {
     /**
@@ -11,13 +12,25 @@ module.exports = {
     },
 
     /**
-     *
+     * add blog
      * @param ctx
      * @param newBlog
      * @returns {blog} 新增博客
      */
-    async insert(ctx,newBlog){
+    async insert(ctx, newBlog){
         return await ctx.mongo.db(config.dbName).collection(config.table.blog).insert(newBlog);
-    }
+    },
+
+    /**
+     * delete blog
+     * @param ctx
+     * @param id
+     * @returns {ops}
+     */
+    async delete(ctx, id){
+        return await ctx.mongo.db(config.dbName).collection(config.table.blog).remove({
+            _id: mongo.ObjectId(id)
+        });
+    },
 
 }

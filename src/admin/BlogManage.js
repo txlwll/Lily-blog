@@ -2,11 +2,118 @@ import React from 'react'
 import {
     Link,
 } from 'react-router-dom'
+import _ from 'underscore'
 import {Button} from 'antd';
 import './css/blogManage.css'
 
 class BlogManage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            categoryData: [],
+            blogDatas: [],
+        }
+    }
+
+    componentDidMount() {
+        // 发请求获取分类数据
+        fetch('/category')
+            .then(res => res.json())
+            .then(categoryRes => {
+                this.setState({
+                    categoryData: categoryRes,
+                }, () => {
+                    console.log(this.state.categoryData)
+                })
+                // 发请求获取博客数据
+                fetch('/blogList')
+                    .then(res => res.json())
+                    .then(json => {
+                        json.forEach(item => {
+                            item.categoryName = _.find(categoryRes, {_id: item.categoryID}).categoryName
+                        })
+                        this.setState({
+                            blogDatas: json,
+                        }, () => {
+                            console.log(this.state.blogDatas)
+                        })
+                        console.log('parsed json', json)
+                    })
+                    .catch(function (ex) {
+                        console.log('parsing failed', ex)
+                    })
+
+            })
+            .catch(function (ex) {
+                console.log('parsing failed', ex)
+            })
+    }
+
+    handleOnDeleteBlog = (item) => {
+        fetch(`/delete-blog/${item._id}`, {
+            method: 'delete',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('parsed json', json)
+                const tempIndex = _.findIndex(this.state.blogDatas, {_id: item._id})
+                if (tempIndex > -1) {
+                    this.state.blogDatas.splice(tempIndex, 1);
+                    this.setState({
+                        blogDatas: [...this.state.blogDatas]
+                    })
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .then(() => {
+                this.setState({loading: false});
+            })
+
+
+    }
+
     render() {
+        // 博客列表
+        const blogItems = this.state.blogDatas.map(item => {
+            return (
+                <div key={item._id} className="admin-blog-item">
+                    <p>{item.title}</p>
+                    <div className="admin-tab-right item-title">
+                        <p>( {item.visits} )</p>
+                        <p>{item.createDate}</p>
+                        <p>{item.categoryName}</p>
+                        <p>
+                            <span>预览</span>
+                            <Link to={`${this.props.match.url}/add_blog`}>
+                                <span>编辑</span>
+                            </Link>
+                            <span onClick={()=>this.handleOnDeleteBlog(item)}>删除</span>
+                        </p>
+                    </div>
+                </div>
+            )
+        })
+
+        // 分类列表
+        const categoryItems = this.state.categoryData.map(item => {
+            return (
+                <div key={item._id} className="admin-category-item">
+                    <p>{item.categoryName}
+                        <sapn>({item.count || 0})</sapn>
+                    </p>
+                    <div className="admin-category-msg">
+                        <p>编辑</p>
+                        <p>删除</p>
+                    </div>
+                </div>
+            )
+        })
+
         return (
             <div>
                 <div className="admin-header">
@@ -28,96 +135,7 @@ class BlogManage extends React.Component {
                             </div>
                         </div>
                         <div className="admin-blog-list">
-                            <div className="admin-blog-item">
-                                <p>致我逝去的青涩时光</p>
-                                <div className="admin-tab-right item-title">
-                                    <p>( 0 )</p>
-                                    <p>2015-10-10</p>
-                                    <p>react</p>
-                                    <p>
-                                        <span>预览</span>
-                                        <Link to={`${this.props.match.url}/add_blog`}>
-                                            <span>编辑</span>
-                                        </Link>
-                                        <span>删除</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="admin-blog-item">
-                                <p>致我逝去的青涩时光</p>
-                                <div className="admin-tab-right item-title">
-                                    <p>( 0 )</p>
-                                    <p>2015-10-10</p>
-                                    <p>react</p>
-                                    <p>
-                                        <span>预览</span>
-                                        <Link to={`${this.props.match.url}/add_blog`}>
-                                            <span>编辑</span>
-                                        </Link>
-                                        <span>删除</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="admin-blog-item">
-                                <p>致我逝去的青涩时光</p>
-                                <div className="admin-tab-right item-title">
-                                    <p>( 0 )</p>
-                                    <p>2015-10-10</p>
-                                    <p>react</p>
-                                    <p>
-                                        <span>预览</span>
-                                        <Link to={`${this.props.match.url}/add_blog`}>
-                                            <span>编辑</span>
-                                        </Link>
-                                        <span>删除</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="admin-blog-item">
-                                <p>致我逝去的青涩时光</p>
-                                <div className="admin-tab-right item-title">
-                                    <p>( 0 )</p>
-                                    <p>2015-10-10</p>
-                                    <p>react</p>
-                                    <p>
-                                        <span>预览</span>
-                                        <Link to={`${this.props.match.url}/add_blog`}>
-                                            <span>编辑</span>
-                                        </Link>
-                                        <span>删除</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="admin-blog-item">
-                                <p>致我逝去的青涩时光</p>
-                                <div className="admin-tab-right item-title">
-                                    <p>( 0 )</p>
-                                    <p>2015-10-10</p>
-                                    <p>react</p>
-                                    <p>
-                                        <span>预览</span>
-                                        <Link to={`${this.props.match.url}/add_blog`}>
-                                            <span>编辑</span>
-                                        </Link>
-                                        <span>删除</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="admin-blog-item">
-                                <p>致我逝去的青涩时光</p>
-                                <div className="admin-tab-right item-title">
-                                    <p>( 0 )</p>
-                                    <p>2015-10-10</p>
-                                    <p>react</p>
-                                    <p>
-                                        <span>预览</span>
-                                        <Link to={`${this.props.match.url}/add_blog`}>
-                                            <span>编辑</span>
-                                        </Link>
-                                        <span>删除</span>
-                                    </p>
-                                </div>
-                            </div>
+                            {blogItems}
                         </div>
                     </div>
                     <div className="admin-category">
@@ -126,33 +144,7 @@ class BlogManage extends React.Component {
                             <Button type="primary" className="add-blog-category">添加分类<span className="add-icon"></span></Button>
                         </div>
                         <div className="admin-category-list">
-                            <div className="admin-category-item">
-                                <p>个人日记
-                                    <sapn>(0)</sapn>
-                                </p>
-                                <div className="admin-category-msg">
-                                    <p>编辑</p>
-                                    <p>删除</p>
-                                </div>
-                            </div>
-                            <div className="admin-category-item">
-                                <p>养生
-                                    <sapn>(0)</sapn>
-                                </p>
-                                <div className="admin-category-msg">
-                                    <p>编辑</p>
-                                    <p>删除</p>
-                                </div>
-                            </div>
-                            <div className="admin-category-item">
-                                <p>技术
-                                    <sapn>(0)</sapn>
-                                </p>
-                                <div className="admin-category-msg">
-                                    <p>编辑</p>
-                                    <p>删除</p>
-                                </div>
-                            </div>
+                            {categoryItems}
                         </div>
                     </div>
                 </div>

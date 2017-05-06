@@ -31,6 +31,7 @@ router
     // 关于博客
     .get('/blogList', blogController.getBlogs)  // 获取博客列表
     .post('/save-blog', blogController.saveBlog) // 保存博客
+    .del('/delete-blog/:id', blogController.deleteBlog)
 
     // 页面路由请求
     .get(['/', '/blog'], async ctx => {

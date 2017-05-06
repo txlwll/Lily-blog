@@ -32,5 +32,11 @@ module.exports = {
         newBlog.categoryID = mongo.ObjectId(newBlog.categoryID)
         let result = await Blog.insert(ctx, newBlog);
         ctx.body = result;
+    },
+
+    async deleteBlog(ctx) {
+        const result = await Blog.delete(ctx, ctx.params.id)
+        console.log(result)
+        ctx.body = result;
     }
 }
