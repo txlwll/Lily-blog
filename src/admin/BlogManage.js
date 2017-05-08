@@ -119,8 +119,7 @@ class BlogManage extends React.Component {
                 <div className="admin-header">
                     <h2>博客系统管理</h2>
                     <Link to={`${this.props.match.url}/add_blog`}>
-                        <Button type="primary" className="add-blog-category new-blog">新增博客<span
-                            className="add-icon new-blog"></span></Button>
+                        <Button type="primary" className="add-blog-category new-blog">新增博客<span className="add-icon new-blog"></span></Button>
                     </Link>
                 </div>
                 <div className="admin-manage">

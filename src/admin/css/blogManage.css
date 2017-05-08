@@ -4,7 +4,7 @@
     align-items: center;
     padding-bottom: 10px;
 }
-.add-blog-category.new-blog {
+.ant-btn.add-blog-category.new-blog {
     display: flex;
     height: 35px;
     margin-left: 35px;

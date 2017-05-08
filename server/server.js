@@ -8,7 +8,7 @@ const mongo = require('koa-mongo');
 const bodyParser = require('koa-bodyparser');
 const config = require('./config')
 
-// 此处开始堆叠各种中间件
+// 中间件
 app.use(mongo(
     {
         host: 'localhost',
@@ -29,10 +29,10 @@ router
     .get('/category',categoryController.getCategoryList )
 
     // 关于博客
-    .get('/blogList', blogController.getBlogs)  // 获取博客列表
-    .get('/blog/:id',blogController.getBlogById)
+    .get('/blog-list', blogController.getBlogs)  // 获取博客列表
+    .get('/blog/:id',blogController.getBlogById) // 获取任一条博客
     .post('/save-blog', blogController.saveBlog) // 保存博客
-    .del('/delete-blog/:id', blogController.deleteBlog)
+    .del('/delete-blog/:id', blogController.deleteBlog) // 删除任一条博客
 
     // 页面路由请求
     .get(['/', '/blog'], async ctx => {

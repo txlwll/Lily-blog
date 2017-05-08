@@ -12,7 +12,7 @@ class BlogDetailLists extends React.Component {
     }
 
     componentDidMount() {
-        fetch('/blogList')
+        fetch('/blog-list')
             .then(res => res.json())
             .then(json => {
                 this.setState({
@@ -33,6 +33,7 @@ class BlogDetailLists extends React.Component {
     }
 
     render() {
+        console.log(this.state.blogDatas[0])
         const blogItemDatas = this.state.blogDatas.map((item, i) => {
             return <BlogItem
                 key={i}
