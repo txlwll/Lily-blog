@@ -46,9 +46,24 @@ module.exports = {
         ctx.body = result;
     },
 
+    /**
+     * delete blog
+     * @param ctx
+     */
     async deleteBlog(ctx) {
         const result = await Blog.delete(ctx, ctx.params.id)
         console.log(result)
+        ctx.body = result;
+    },
+
+
+    async updateBlog(ctx) {
+        const updateBlog = Object.assign({}, ctx.request.body, {
+            updateDate: Date.now(),
+        })
+        delete updateBlog._id;
+        updateBlog.categoryID = mongo.ObjectId(updateBlog.categoryID);
+        let result = await Blog.update(ctx, ctx.params.id, updateBlog);
         ctx.body = result;
     }
 }

@@ -17,7 +17,7 @@ module.exports = {
      * @param id
      * @returns {*}
      */
-    async findOneBlog(ctx,id) {
+    async findOneBlog(ctx, id) {
         return await ctx.mongo.db(config.dbName).collection(config.table.blog).findOne({
             _id: mongo.ObjectId(id)
         });
@@ -43,6 +43,18 @@ module.exports = {
         return await ctx.mongo.db(config.dbName).collection(config.table.blog).remove({
             _id: mongo.ObjectId(id)
         });
+    },
+
+    /**
+     *
+     * @param ctx
+     * @param id
+     * @param updator
+     * @returns {*}
+     */
+    async update(ctx, id, updator){
+        return await ctx.mongo.db(config.dbName).collection(config.table.blog)
+            .updateOne({_id: mongo.ObjectId(id)}, {$set: updator})
     },
 
 }

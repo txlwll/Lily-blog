@@ -26,7 +26,7 @@ class BlogManage extends React.Component {
                     console.log(this.state.categoryData)
                 })
                 // 发请求获取博客数据
-                fetch('/blogList')
+                fetch('/blog-list')
                     .then(res => res.json())
                     .then(json => {
                         json.forEach(item => {

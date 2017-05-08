@@ -1,6 +1,6 @@
 import React from 'react'
 import {Input} from 'antd';
-import {Select, Button, Upload, Modal} from 'antd';
+import {Select, Button, Upload, Modal,message} from 'antd';
 const Option = Select.Option;
 import marked from 'marked'
 import './css/editBlog.css'
@@ -91,24 +91,19 @@ class EditBlog extends React.Component {
             return;
         }
         this.setState({loading: true});
-        const params = {
-            blogContent: this.state.blog.blogContent.trim(), // 博客内容
-            title: this.state.blog.title.trim(), // 博客标题
-            categoryID: this.state.blog.categoryID, // 博客分类
-        }
-        console.log(params)
+
         if(this.state.blog._id) {
             // 编辑博客
-            fetch('/save-blog', {
-                method: 'POST',
+            fetch('/update-blog/' + this.state.blog._id, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(params)
+                body: JSON.stringify(this.state.blog)
             })
                 .then(res => res.json())
-                .then(json => {
-                    console.log('parsed json', json)
+                .then(() => {
+                    message.success('保存成功');
                 })
                 .catch(err => {
                     console.log(err)
@@ -119,6 +114,12 @@ class EditBlog extends React.Component {
 
         } else {
             // 新增博客
+            const params = {
+                blogContent: this.state.blog.blogContent.trim(), // 博客内容
+                title: this.state.blog.title.trim(), // 博客标题
+                categoryID: this.state.blog.categoryID, // 博客分类
+            }
+            console.log(params)
             fetch('/save-blog', {
                 method: 'POST',
                 headers: {
@@ -128,7 +129,12 @@ class EditBlog extends React.Component {
             })
                 .then(res => res.json())
                 .then(json => {
-                    console.log('parsed json', json)
+                    if (json.result.ok === 1 && json.result.n === 1) {
+                        this.setState({
+                            blog: Object.assign({}, this.state.blog, { _id: json.ops[0]._id })
+                        });
+                        message.success('保存成功');
+                    }
                 })
                 .catch(err => {
                     console.log(err)
