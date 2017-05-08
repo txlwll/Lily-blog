@@ -32,6 +32,7 @@ class Admin extends React.Component {
                 <div className="admin-right">
                     <Route exact path={`${match.url}`} component={BlogManage}/>
                     <Route path={`${match.url}/add_blog`} component={EditBlog}/>
+                    <Route path={`${match.url}/edit_blog/:id`} component={EditBlog}/>
                 </div>
             </div>
         )

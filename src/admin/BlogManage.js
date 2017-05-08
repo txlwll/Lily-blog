@@ -89,7 +89,7 @@ class BlogManage extends React.Component {
                         <p>{item.categoryName}</p>
                         <p>
                             <span>预览</span>
-                            <Link to={`${this.props.match.url}/add_blog`}>
+                            <Link to={`${this.props.match.url}/edit_blog/${item._id}`}>
                                 <span>编辑</span>
                             </Link>
                             <span onClick={()=>this.handleOnDeleteBlog(item)}>删除</span>

@@ -30,6 +30,7 @@ router
 
     // 关于博客
     .get('/blogList', blogController.getBlogs)  // 获取博客列表
+    .get('/blog/:id',blogController.getBlogById)
     .post('/save-blog', blogController.saveBlog) // 保存博客
     .del('/delete-blog/:id', blogController.deleteBlog)
 
@@ -37,6 +38,7 @@ router
     .get(['/', '/blog'], async ctx => {
         await send(ctx, 'build/index.html', { title: 'aaa'});
     });
+
 app.use(router.routes())
     .use(router.allowedMethods());
 

@@ -12,6 +12,18 @@ module.exports = {
     },
 
     /**
+     * find one blog by id
+     * @param ctx
+     * @param id
+     * @returns {*}
+     */
+    async findOneBlog(ctx,id) {
+        return await ctx.mongo.db(config.dbName).collection(config.table.blog).findOne({
+            _id: mongo.ObjectId(id)
+        });
+    },
+
+    /**
      * add blog
      * @param ctx
      * @param newBlog

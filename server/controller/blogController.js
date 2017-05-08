@@ -18,6 +18,16 @@ module.exports = {
     },
 
     /**
+     * find one blog by id
+     * @param ctx
+     */
+    async getBlogById(ctx) {
+        let result = await Blog.findOneBlog(ctx, ctx.params.id)
+        console.log(result)
+        ctx.body = result;
+    },
+
+    /**
      * save blog
      * @param {ctx} Koa Context
      */

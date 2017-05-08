@@ -29,24 +29,36 @@ class EditBlog extends React.Component {
             // 保存
             loading: false,
             iconLoading: false,
-
-            blogContent: '', // 博客内容
-            blogTitle:'', // 博客标题
-            blogCategory: '', // 博客分类
+            // 一篇博客信息
+            blog: {
+                blogContent: '', // 博客内容
+                title: '', // 博客标题
+                categoryID: '', // 博客分类
+            },
             categoryData: [], // 所有分类数
         }
     }
 
     componentDidMount() {
+        const blogId = this.props.match.params.id
+        if (blogId) {
+            fetch('/blog/' + blogId)
+                .then(res => res.json())
+                .then(json => {
+                    this.setState({
+                        blog: json
+                    })
+                })
+                .catch(function (ex) {
+                    console.log('parsing failed', ex)
+                })
+        }
         fetch('/category')
             .then(res => res.json())
             .then(json => {
                 this.setState({
                     categoryData: json,
-                }, () => {
-                    console.log(this.state.categoryData)
                 })
-                console.log('parsed json', json)
             })
             .catch(function (ex) {
                 console.log('parsing failed', ex)
@@ -57,7 +69,7 @@ class EditBlog extends React.Component {
     handleOptionsChange = (value) => {
         console.log(value);
         this.setState({
-            blogCategory: value
+            blog: Object.assign({}, this.state.blog, {categoryID: value}),
         })
     }
 
@@ -74,59 +86,82 @@ class EditBlog extends React.Component {
 
     // 保存
     enterLoading = () => {
-        if (!this.state.blogContent || !this.state.blogTitle || !this.state.blogCategory) {
+        if (!this.state.blog.blogContent || !this.state.blog.title || !this.state.blog.categoryID) {
             alert('必填')
             return;
         }
         this.setState({loading: true});
         const params = {
-            blogContent: this.state.blogContent, // 博客内容
-            title: this.state.blogTitle, // 博客标题
-            categoryID: this.state.blogCategory, // 博客分类
+            blogContent: this.state.blog.blogContent.trim(), // 博客内容
+            title: this.state.blog.title.trim(), // 博客标题
+            categoryID: this.state.blog.categoryID, // 博客分类
         }
         console.log(params)
-        fetch('/save-blog', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(params)
+        if(this.state.blog._id) {
+            // 编辑博客
+            fetch('/save-blog', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(params)
             })
-            .then(res => res.json())
-            .then(json => {
-                console.log('parsed json', json)
+                .then(res => res.json())
+                .then(json => {
+                    console.log('parsed json', json)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+                .then(() => {
+                    this.setState({loading: false});
+                })
+
+        } else {
+            // 新增博客
+            fetch('/save-blog', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(params)
             })
-            .catch(err => {
-                console.log(err)
-            })
-            .then(() => {
-                this.setState({ loading: false });
-            })
+                .then(res => res.json())
+                .then(json => {
+                    console.log('parsed json', json)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+                .then(() => {
+                    this.setState({loading: false});
+                })
         }
+    }
 
     // 博客输入框
     handleContentChange = (e) => {
         this.setState({
-            blogContent: e.target.value.trim(),
+            blog: Object.assign({}, this.state.blog, {blogContent: e.target.value}),
         })
     }
 
     // 博客标题
     handleTitleChange = (e) => {
         this.setState({
-            blogTitle: e.target.value.trim(),
+            blog: Object.assign({}, this.state.blog, {title: e.target.value}),
         })
     }
 
     render() {
+        const {blog, categoryData, loading, previewVisible, previewImage, fileList} = this.state
         // 选择分类下拉菜单
-        const OptionItems = this.state.categoryData.map(item => {
+        const OptionItems = categoryData.map(item => {
             return (
                 <Option key={item._id} value={item._id}>{item.categoryName}</Option>
             )
-        })
+        });
         // 图片上传
-        const {previewVisible, previewImage, fileList} = this.state;
         const uploadButton = (
             <div>
                 <div className="ant-upload-text">上传图片</div>
@@ -136,15 +171,17 @@ class EditBlog extends React.Component {
         return (
             <div className="edit-blog-body">
                 <div className="example-input edit-title-title">
-                    <Input size="large" placeholder="请输入文章标题" onChange={this.handleTitleChange}/>
+                    <Input size="large" value={blog.title} placeholder="请输入文章标题"
+                           onChange={this.handleTitleChange}/>
                 </div>
                 <div className="edit-options">
                     <div className="selected-options">
                         <Select
                             showSearch={true}
-                            style={{ width: 100 }}
+                            style={{width: 100}}
                             placeholder="选择分类"
                             optionFilterProp="children"
+                            value={blog.categoryID}
                             onChange={this.handleOptionsChange}
                             filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                         >
@@ -166,7 +203,7 @@ class EditBlog extends React.Component {
                         </Modal>
                     </div>
                     <div className="save-btn">
-                        <Button type="primary" loading={this.state.loading} onClick={this.enterLoading}>
+                        <Button type="primary" loading={loading} onClick={this.enterLoading}>
                             Save
                         </Button>
                     </div>
@@ -174,10 +211,11 @@ class EditBlog extends React.Component {
                 <div className="edit-content">
                     <div className="edit-left">
                         <textarea className="admin-edit-blog"
-                                  value={this.state.blogContent}
+                                  value={blog.blogContent}
                                   onChange={this.handleContentChange}/>
                     </div>
-                    <div className="edit-right" dangerouslySetInnerHTML={{__html: marked(this.state.blogContent)}}></div>
+                    <div className="edit-right"
+                         dangerouslySetInnerHTML={{__html: marked(blog.blogContent)}}></div>
                 </div>
             </div>
         )
