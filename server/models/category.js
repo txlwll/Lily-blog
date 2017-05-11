@@ -23,9 +23,19 @@ module.exports={
             .updateOne({_id: mongo.ObjectId(id)}, {$set: updator})
     },
 
+    /**
+     * delete category
+     * @param ctx
+     * @param id
+     * @returns {*}
+     */
     async delete(ctx,id) {
         return await ctx.mongo.db(config.dbName).collection(config.table.category).remove({
             _id: mongo.ObjectId(id)
         });
-    }
+    },
+
+    async insert(ctx,newCategory){
+        return await ctx.mongo.db(config.dbName).collection(config.table.category).insert(newCategory);
+    },
 }

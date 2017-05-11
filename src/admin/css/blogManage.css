@@ -96,6 +96,9 @@
     width: 250px;
     border-radius: 3px;
 }
+.admin-tab p {
+    width: 75px;
+}
 .ant-btn.add-blog-category {
     display: flex;
     flex-direction: row;
@@ -146,4 +149,25 @@
 .admin-category-msg p:hover {
     cursor: pointer;
     color: #2e3ba0;
+}
+.ant-input.edit-category {
+    width: 80%;
+}
+.ant-input.add-category-input{
+    width: 65%;
+}
+.add-category-box {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+.add-icon.save{
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    margin-left: 5px;
+    background: url("../imgs/save_icon.png") no-repeat center;
+    background-size: contain;
 }

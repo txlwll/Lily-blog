@@ -29,6 +29,7 @@ router
     .get('/category', categoryController.getCategoryList)
     .put('/update-category/:id',categoryController.updateCategory)
     .del('/delete-category/:id',categoryController.deleteCategory)
+    .post('/add-category',categoryController.addCategory)
 
     // 关于博客
     .get('/blog-list', blogController.getBlogs)  // 获取博客列表

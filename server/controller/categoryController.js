@@ -1,4 +1,5 @@
 const Category = require('../models/category')
+const mongo = require('koa-mongo');
 
 module.exports = {
     /**
@@ -28,6 +29,12 @@ module.exports = {
     async deleteCategory(ctx) {
         const result = await Category.delete(ctx, ctx.params.id)
         console.log(result)
+        ctx.body = result;
+    },
+
+    async addCategory(ctx) {
+        let newCategory = Object.assign({}, ctx.request.body)
+        let result = await Category.insert(ctx, newCategory);
         ctx.body = result;
     }
 }
