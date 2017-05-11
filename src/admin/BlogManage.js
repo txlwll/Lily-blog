@@ -3,7 +3,7 @@ import {
     Link,
 } from 'react-router-dom'
 import _ from 'underscore'
-import {Button} from 'antd';
+import {Button,message} from 'antd';
 import './css/blogManage.css'
 
 class BlogManage extends React.Component {
@@ -12,6 +12,8 @@ class BlogManage extends React.Component {
         this.state = {
             categoryData: [],
             blogDatas: [],
+            currentEditCategoryId: '',
+            currentEditCategoryName: '',
         }
     }
 
@@ -49,6 +51,10 @@ class BlogManage extends React.Component {
             })
     }
 
+    /**
+     * 删除博客
+     * @param item
+     */
     handleOnDeleteBlog = (item) => {
         fetch(`/delete-blog/${item._id}`, {
             method: 'delete',
@@ -77,9 +83,82 @@ class BlogManage extends React.Component {
 
     }
 
+    handleEditCategory = (item) => {
+        this.setState({
+            currentEditCategoryId: item._id,
+            currentEditCategoryName: item.categoryName,
+        })
+    }
+    handleOnChangeCategoryName = (e) => {
+        this.setState({
+            currentEditCategoryName: e.target.value
+        })
+    }
+    /**
+     * 保存博客分类修改
+     */
+    handleSaveCategoryName = () => {
+        const {currentEditCategoryId, categoryData, currentEditCategoryName} = this.state
+        fetch(`/update-category/${currentEditCategoryId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({categoryName:currentEditCategoryName})
+        })
+            .then(res => res.json())
+            .then(() => {
+                const tmpCategory = _.find(categoryData, {_id: currentEditCategoryId})
+                tmpCategory.categoryName = currentEditCategoryName
+                this.setState({
+                    categoryData: [...categoryData],
+                    currentEditCategoryId: '',
+                })
+                message.success('保存成功');
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .then(() => {
+                this.setState({loading: false});
+            })
+
+    }
+
+    handleSaveCategoryOnEnter = (event) => {
+        if (event.keyCode === 13) {
+            this.handleSaveCategoryName()
+        }
+    }
+
+    handleOnDeleteCategory = (item) => {
+        fetch(`/delete-category/${item._id}`,{
+            method: 'delete',
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('delete category' + json)
+                const tmpIndex = _.findIndex(this.state.categoryData,{_id:item._id})
+                if(tmpIndex > -1) {
+                    this.state.categoryData.splice(tmpIndex,1)
+                    this.setState({
+                        categoryData:[...this.state.categoryData]
+                    })
+                }
+                message.success('删除成功');
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .then(() => {
+                this.setState({loading: false});
+            })
+    }
+
     render() {
+        const {blogDatas, currentEditCategoryId, currentEditCategoryName} = this.state
         // 博客列表
-        const blogItems = this.state.blogDatas.map(item => {
+        const blogItems = blogDatas.map(item => {
             return (
                 <div key={item._id} className="admin-blog-item">
                     <p>{item.title}</p>
@@ -101,14 +180,22 @@ class BlogManage extends React.Component {
 
         // 分类列表
         const categoryItems = this.state.categoryData.map(item => {
+            const categoryName = item._id === currentEditCategoryId ?
+                <input type="text" className="edit-category" onKeyUp={this.handleSaveCategoryOnEnter}
+                       onChange={this.handleOnChangeCategoryName}
+                       value={currentEditCategoryName}/> :
+                <p>{item.categoryName}&nbsp;&nbsp;
+                    <sapn>({item.count || 0})</sapn>
+                </p>
+
             return (
                 <div key={item._id} className="admin-category-item">
-                    <p>{item.categoryName}
-                        <sapn>({item.count || 0})</sapn>
-                    </p>
+                    {categoryName}
                     <div className="admin-category-msg">
-                        <p>编辑</p>
-                        <p>删除</p>
+                        {item._id === currentEditCategoryId ?
+                            <p onClick={this.handleSaveCategoryName}>保存</p>
+                            : <p onClick={() => this.handleEditCategory(item)}>编辑</p>}
+                        <p onClick={() => this.handleOnDeleteCategory(item)}>删除</p>
                     </div>
                 </div>
             )
@@ -119,7 +206,8 @@ class BlogManage extends React.Component {
                 <div className="admin-header">
                     <h2>博客系统管理</h2>
                     <Link to={`${this.props.match.url}/add_blog`}>
-                        <Button type="primary" className="add-blog-category new-blog">新增博客<span className="add-icon new-blog"></span></Button>
+                        <Button type="primary" className="add-blog-category new-blog">新增博客<span
+                            className="add-icon new-blog"></span></Button>
                     </Link>
                 </div>
                 <div className="admin-manage">

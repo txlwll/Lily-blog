@@ -27,6 +27,8 @@ const categoryController = require('./controller/categoryController')
 router
     // 博客分类
     .get('/category', categoryController.getCategoryList)
+    .put('/update-category/:id',categoryController.updateCategory)
+    .del('/delete-category/:id',categoryController.deleteCategory)
 
     // 关于博客
     .get('/blog-list', blogController.getBlogs)  // 获取博客列表

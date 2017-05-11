@@ -56,7 +56,10 @@ module.exports = {
         ctx.body = result;
     },
 
-
+    /**
+     * update blog
+     * @param ctx
+     */
     async updateBlog(ctx) {
         const updateBlog = Object.assign({}, ctx.request.body, {
             updateDate: Date.now(),
