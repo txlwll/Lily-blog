@@ -15,9 +15,7 @@ class BlogManage extends React.Component {
             currentEditCategoryId: '',
             currentEditCategoryName: '',
             isAddCategory: false,
-            category: {
-                categoryName:'',
-            }
+            newCategoryName: '',
         }
     }
 
@@ -174,15 +172,18 @@ class BlogManage extends React.Component {
 
     handleOnChangeCategory = (e) => {
         this.setState({
-            category: Object.assign({},this.state.category,{categoryName: e.target.value})
+            newCategoryName: e.target.value
         })
     }
 
     handleOnAddSaveCategory = () => {
-        const params = {
-            categoryName: this.state.category.categoryName.trim(),
+        if (!this.state.newCategoryName) {
+            message.warning('添加分类必填')
+            return;
         }
-        console.log(params)
+        const params = {
+            categoryName: this.state.newCategoryName.trim(),
+        }
         fetch('/add-category',{
             method: 'POST',
             headers: {
@@ -193,12 +194,13 @@ class BlogManage extends React.Component {
             .then(res => res.json())
             .then(json => {
                 if (json.result.ok === 1 && json.result.n === 1) {
+                    this.state.categoryData.push(json.ops[0])
                     this.setState({
-                        category: Object.assign({}, this.state.category, { _id: json.ops[0]._id })
+                        categoryData: [...this.state.categoryData],
+                        newCategoryName: '',
                     });
-                    message.success('保存成功');
+                    message.success('添加成功');
                 }
-                console.log('aaa',json)
             })
             .catch(err => {
                 console.log(err)
@@ -209,14 +211,9 @@ class BlogManage extends React.Component {
                 })
             })
     }
-    handleSaveAddCategoryOnEnter = (event) => {
-        if (event.keyCode === 13) {
-            this.handleOnAddSaveCategory()
-        }
-    }
 
     render() {
-        const {blogDatas,categoryData, currentEditCategoryId,currentEditCategoryName, category,isAddCategory} = this.state
+        const {blogDatas,categoryData, currentEditCategoryId,currentEditCategoryName, newCategoryName,isAddCategory} = this.state
         // 博客列表
         const blogItems = blogDatas.map(item => {
             return (
@@ -264,7 +261,7 @@ class BlogManage extends React.Component {
         const addCategoryBtn = isAddCategory ?
             <div className="add-category-box">
                 <Input className="add-category-input" type="text" placeholder="添加分类"
-                       value={category.categoryName} onKeyUp={this.handleSaveAddCategoryOnEnter}
+                       value={newCategoryName}
                        onChange={this.handleOnChangeCategory}
                 />
                 <span className="add-icon save" onClick={this.handleOnAddSaveCategory}></span>

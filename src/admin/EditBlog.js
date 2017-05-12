@@ -87,7 +87,7 @@ class EditBlog extends React.Component {
     // 保存
     enterLoading = () => {
         if (!this.state.blog.blogContent || !this.state.blog.title || !this.state.blog.categoryID) {
-            alert('必填')
+            message.warning('三项都不能为空')
             return;
         }
         this.setState({loading: true});

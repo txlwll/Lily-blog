@@ -1,5 +1,5 @@
 import React from 'react'
-import {Pagination} from 'antd';
+import {Pagination} from 'antd'
 import BlogItem from './BlogItem'
 import './css/blogDetailLists.css'
 
@@ -11,8 +11,20 @@ class BlogDetailLists extends React.Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.match.params.id !== this.props.match.params.id) {
+            this.fetchBlogList(nextProps.match.params.id)
+        }
+    }
+
     componentDidMount() {
-        fetch('/blog-list')
+        this.fetchBlogList(this.props.match.params.id)
+    }
+
+    fetchBlogList = (categoryId) => {
+        this.props.setActiveCategoryId(categoryId ? categoryId : '')
+        const query = categoryId ? `?categoryId=${categoryId}` : ''
+        fetch('/blog-list' + query)
             .then(res => res.json())
             .then(json => {
                 this.setState({

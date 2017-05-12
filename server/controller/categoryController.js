@@ -1,4 +1,5 @@
 const Category = require('../models/category')
+const Blog = require('../models/blog')
 const mongo = require('koa-mongo');
 
 module.exports = {
@@ -8,7 +9,10 @@ module.exports = {
      */
     async getCategoryList(ctx){
         let categoryData = await Category.find(ctx);
-        categoryData = categoryData.map(item => Object.assign({}, item, {acticleCount: 0}))
+        await Promise.all(categoryData.map(async (item,i) => {
+            const tmpBlogs = await Blog.getBlogsByCategoryId(ctx, item._id)
+            categoryData[i] = Object.assign({}, item, {count: tmpBlogs.length})
+        }));
         ctx.body = categoryData;
     },
 

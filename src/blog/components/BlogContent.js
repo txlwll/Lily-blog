@@ -3,20 +3,20 @@ import './css/blogContent.css'
 
 
 class BlogContent extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state= {
-            blog: {
-                blogContent: '', // 博客内容
-                title: '', // 博客标题
-                categoryID: '', // 博客分类
-                createDate: '', // 博客发表日期
-                support: '', // 赞
-                comments: [], // 评论
-                visits: '', // 访问量
-            },
-        }
-    }
+    // constructor(props) {
+    //     super(props);
+    //     this.state= {
+    //         blog: {
+    //             blogContent: '', // 博客内容
+    //             title: '', // 博客标题
+    //             categoryID: '', // 博客分类
+    //             createDate: '', // 博客发表日期
+    //             support: '', // 赞
+    //             comments: [], // 评论
+    //             visits: '', // 访问量
+    //         },
+    //     }
+    // }
 
     componentDidMount() {
         const blogId = this.props.match.params.id
@@ -25,9 +25,7 @@ class BlogContent extends React.Component {
                 .then(res => res.json())
                 .then(json => {
                     console.log('json', json)
-                    this.setState({
-                        blog: json
-                    })
+                    this.props.setBlogDetail(json)
                 })
                 .catch(function (ex) {
                     console.log('parsing failed', ex)
@@ -37,7 +35,7 @@ class BlogContent extends React.Component {
 
 
     render() {
-        const { blog } = this.state
+        const { blog } = this.props
         return (
             <div className="article-content">
                 <div className="title">

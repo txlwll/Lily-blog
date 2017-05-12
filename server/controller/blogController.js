@@ -9,7 +9,12 @@ module.exports = {
      * @param {ctx} Koa Context
      */
     async getBlogs(ctx) {
-        let blogListData = await Blog.find(ctx)
+        const filter = {}
+        const categoryId = ctx.request.query.categoryId
+        if (categoryId) {
+            filter.categoryID = mongo.ObjectId(categoryId)
+        }
+        let blogListData = await Blog.find(ctx,filter)
         blogListData.forEach(item => {
             item.createDate = moment(item.createDate).format('YYYY-MM-DD')
             item.blogTopic = item.blogContent.length >= 50 ? item.blogContent.substring(0, 50) + '……' : item.blogContent
@@ -25,7 +30,6 @@ module.exports = {
      */
     async getBlogById(ctx) {
         let result = await Blog.findOneBlog(ctx, ctx.params.id)
-        console.log(result)
         ctx.body = result;
     },
 

@@ -7,8 +7,8 @@ module.exports = {
      * @param ctx
      * @returns {blogs} 查询满足条件的博客
      */
-    async find(ctx){
-        return await ctx.mongo.db(config.dbName).collection(config.table.blog).find().toArray();
+    async find(ctx, filter){
+        return await ctx.mongo.db(config.dbName).collection(config.table.blog).find(filter).toArray();
     },
 
     /**
@@ -46,7 +46,7 @@ module.exports = {
     },
 
     /**
-     *
+     * 更新博客
      * @param ctx
      * @param id
      * @param updator
@@ -57,4 +57,8 @@ module.exports = {
             .updateOne({_id: mongo.ObjectId(id)}, {$set: updator})
     },
 
+    async getBlogsByCategoryId(ctx, categoryID){
+        return await ctx.mongo.db(config.dbName).collection(config.table.blog)
+            .find({categoryID: mongo.ObjectId(categoryID)}).toArray()
+    }
 }

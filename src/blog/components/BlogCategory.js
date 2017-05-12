@@ -1,5 +1,8 @@
 import React from 'react'
 import 'whatwg-fetch'
+import {
+    Link,
+} from 'react-router-dom'
 import './css/blogCategory.css'
 
 class BlogCategory extends React.Component {
@@ -28,20 +31,21 @@ class BlogCategory extends React.Component {
     }
 
     render() {
+        const { match, activeCategoryId } = this.props;
         const CategoryItem = this.state.categoryData.map((item, i) => {
-
+            let categoryStyle = 'category-item' + (item._id === activeCategoryId ? ' active-category' : '')
             return (
-                <div key={i}>
-                    <div className="category-item">
-                        <div className="category-item-left">
-                            <span className="category-icon"></span>
-                            <div className="item-content">
-                                <p className="category-name">{item.categoryName}</p>
-                                <p className="blog-num">{item.acticleCount}篇文章</p>
-                            </div>
+                <div key={i} className={categoryStyle}>
+                    <Link to={`${match.url}/category/${item._id}`}>
+                    <div className="category-item-left">
+                        <span className="category-icon"></span>
+                        <div className="item-content">
+                            <p className="category-name">{item.categoryName}</p>
+                            <p className="blog-num">{item.acticleCount}篇文章</p>
                         </div>
-                        <span className="icon-back"></span>
                     </div>
+                    <span className="icon-back"></span>
+                    </Link>
                 </div>
             )
         })

@@ -16,7 +16,7 @@ class BlogItem extends React.Component {
                 </div>
                 <div className="blog-content">
                     {blogData.blogTopic}
-                    <Link to={`${this.props.match.url}/${blogData._id}`}>
+                    <Link to={`/blog/${blogData._id}`}>
                         <span className="read-all">&lt;&lt; 阅读全文</span>
                     </Link>
                 </div>
